@@ -1,0 +1,66 @@
+<div class="form-container">
+  <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="formatSelect">Infrastructure:</label>
+      <select id="formatSelect" formControlName="type">
+        <option value="">-- Select infrastructure --</option>
+        <option value="kubernetes">Kubernetes</option>
+        <option value="openstack">Openstack</option>
+        <option value="slurm">Slurm</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label for="formatSelect">Format:</label>
+      <select id="formatSelect" formControlName="format" (change)="onFormatChange()">
+        <option value="">-- Select a format type --</option>
+        <option value="application/json">JSON</option>
+        <option value="application/x-yaml">YAML</option>
+      </select>
+    </div>
+
+    <div class="metadata-editor">
+      <h3>Metadata Fields</h3>
+      
+      <div formGroupName="metadata" class="metadata-fields">
+        <div class="form-field">
+          <label for="name">Name:</label>
+          <input type="text" id="name" formControlName="name">
+        </div>
+        <div class="form-field">
+          <label for="description">Description:</label>
+          <input type="text" id="description" formControlName="description">
+        </div>
+        <div class="form-field">
+          <label for="contact">Contact:</label>
+          <input type="text" id="contact" formControlName="contact">
+        </div>
+        
+        <div formArrayName="additionalFields">
+          <div *ngFor="let field of additionalFields.controls; let i = index" 
+               [formGroupName]="i" 
+               class="dynamic-field">
+            <input type="text" formControlName="key" placeholder="Key">
+            <input type="text" formControlName="value" placeholder="Value">
+            <button type="button" class="remove-btn" (click)="removeField(i)">×</button>
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" class="add-field-btn" (click)="addField()">+ Add Field</button>
+    </div>
+
+    <div class="form-field">
+      <label for="configInput">Config:</label>
+      <textarea 
+        id="configInput" 
+        formControlName="configInput" 
+        rows="10" 
+        cols="50"
+        [placeholder]="getConfigPlaceholder()"
+      ></textarea>
+    </div>
+
+    <button type="submit" [disabled]="!configForm.valid">Create</button>
+  </form>
+</div>

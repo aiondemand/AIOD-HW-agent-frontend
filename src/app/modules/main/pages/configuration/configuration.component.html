@@ -1,0 +1,42 @@
+<div class="selector-container row">
+  <div class="col-4">
+    <div class="config-group">
+      <form [formGroup]="form">
+        <select formControlName="selectedOption" (change)="onSelectionChange()">
+          <option value="">-- Select a configuration --</option>
+          <option *ngFor="let option of options" [value]="option.id">
+           {{option.metadata.name}} - {{option.orchestrator_type}} - {{option.id}}
+          </option>
+        </select>
+      </form>
+
+      <div class="button-container">
+        <button type="button" (click)="goToNewConfig()">+ New Config</button>
+        <button type="button" (click)="goToPlugins()">Plugins</button>
+      </div>
+    </div>
+
+    <div *ngIf="selectedOptionData" class="info-card">
+      <div>
+        <h3>{{ selectedOptionData.name }}</h3>
+        <p><strong>Config type:</strong> {{ selectedOptionData.orchestrator_type }}</p>
+        <p><strong>Name:</strong> {{ selectedOptionData.metadata?.name }}</p>
+        <p><strong>Description:</strong> {{ selectedOptionData.metadata?.description }}</p>
+        <p><strong>Contact:</strong> {{ selectedOptionData.metadata?.contact }}</p>
+      </div>
+      <div>
+        <button class="delete-btn" (click)="onDelete()">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="right" *ngIf="selectedOptionData">
+    <button type="button" (click)="getData()">Get data</button>
+  </div>
+
+  <div *ngIf="selectedOptionData && showData" class="col-8">
+    <app-asset-form [data]="formData"></app-asset-form>
+  </div>
+</div>

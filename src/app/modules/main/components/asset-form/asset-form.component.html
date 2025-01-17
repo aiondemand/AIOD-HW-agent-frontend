@@ -1,0 +1,700 @@
+<div class="form-container">
+  <h2>Computational asset:</h2>
+  <form class="asset-form" [formGroup]="assetForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-row">
+      <div class="form-column">
+        <label for="platform">Platform:</label>
+        <input id="platform" type="text" formControlName="platform">
+      </div>
+      <div class="form-column">
+        <label for="platform_resource_identifier">Platform Resource Identifier:</label>
+        <input id="platform_resource_identifier" type="text" formControlName="platform_resource_identifier">
+      </div>
+      <div class="form-column">
+        <label for="name">Name:</label>
+        <input id="name" type="text" formControlName="name">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-column">
+        <label for="date_published">Date Published:</label>
+        <input id="date_published" type="datetime-local" formControlName="date_published">
+      </div>
+      <div class="form-column">
+        <label for="same_as">Same As:</label>
+        <input id="same_as" type="url" formControlName="same_as">
+      </div>
+      <div class="form-column">
+        <label for="is_accessible_for_free">Is Accessible For Free:</label>
+        <select id="is_accessible_for_free" formControlName="is_accessible_for_free">
+          <option [ngValue]="true">True</option>
+          <option [ngValue]="false">False</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-column">
+        <label for="version">Version:</label>
+        <input id="version" type="text" formControlName="version">
+      </div>
+      <div class="form-column">
+        <label for="status_info">Status Info:</label>
+        <input id="status_info" type="url" formControlName="status_info">
+      </div>
+      <div class="form-column">
+        <label for="os">OS:</label>
+        <input id="os" type="text" formControlName="os">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-column">
+        <label for="kernel">Kernel:</label>
+        <input id="kernel" type="text" formControlName="kernel">
+      </div>
+      <div class="form-column">
+        <label for="pricing_scheme">Pricing Scheme:</label>
+        <input id="pricing_scheme" type="text" formControlName="pricing_scheme">
+      </div>
+      <div class="form-column">
+        <label for="license">License:</label>
+        <input id="license" type="url" formControlName="license">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <div>
+          <label for="type">Type:</label>
+          <input id="type" type="text" formControlName="type">
+        </div>
+      </div>
+      <div class="form-column">
+      </div>
+      <div class="form-column"></div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Location</h3>
+        <div formArrayName="location">
+          <button type="button" (click)="addLocation()">Add Location</button>
+          <div *ngFor="let locationGroup of locationControls; let i = index" [formGroupName]="i" class="location-group">
+            <!-- Address Section -->
+            <div formGroupName="address" class="address-section">
+              <h4>Address</h4>
+              <input formControlName="region" placeholder="Region" maxlength="256">
+              <input formControlName="locality" placeholder="Locality" maxlength="256">
+              <input formControlName="street" placeholder="Street" maxlength="256">
+              <input formControlName="postal_code" placeholder="Postal Code" maxlength="64">
+              <input formControlName="address" placeholder="Address" maxlength="256">
+              <div *ngIf="!viewMode" class="country-search-row">
+                <input formControlName="country" placeholder="Country Code (3 characters)" maxlength="3">
+                <button type="button" (click)="searchAddress(i)" class="search-button">
+                  Search Location
+                </button>
+              </div>
+            </div>
+
+            <!-- Geo Section with Map -->
+            <div formGroupName="geo" class="geo-section">
+              <h4>Geographic Coordinates</h4>
+              <div *ngIf="!viewMode" class="map-container" [id]="'map-' + i"></div>
+              <div class="coordinates-inputs">
+                <input formControlName="latitude" placeholder="Latitude" type="number" step="any">
+                <input formControlName="longitude" placeholder="Longitude" type="number" step="any">
+                <input formControlName="elevation_millimeters" placeholder="Elevation (mm)" type="number">
+              </div>
+            </div>
+
+            <button type="button" (click)="removeLocation(i)" class="remove-button">Remove</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-column"></div>
+    </div>
+
+    <h3>Description</h3>
+    <div formGroupName="description">
+      <div>
+        <label for="plain">Plain:</label>
+        <textarea id="plain" formControlName="plain"></textarea>
+      </div>
+      <div>
+        <label for="html">HTML:</label>
+        <textarea id="html" formControlName="html"></textarea>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Accelerator</h3>
+        <div formArrayName="accelerator">
+          <div class="add-button">
+            <button type="button" (click)="addAccelerator()">Add Accelerator</button>
+          </div>
+          <div *ngFor="let acceleratorGroup of acceleratorControls; let i = index" [formGroupName]="i">
+            <div class="field">
+              <label for="vendor-{{i}}">Vendor</label>
+              <input id="vendor-{{i}}" formControlName="vendor" placeholder="Vendor" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="type-{{i}}">Type</label>
+              <input id="type-{{i}}" formControlName="type" placeholder="Type" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="model-{{i}}">Model Name</label>
+              <input id="model-{{i}}" formControlName="acc_model_name" placeholder="Model Name" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="architecture-{{i}}">Architecture</label>
+              <input id="architecture-{{i}}" formControlName="architecture" placeholder="Architecture" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="cores-{{i}}">Cores</label>
+              <input id="cores-{{i}}" formControlName="cores" placeholder="Cores" type="number">
+            </div>
+
+            <div class="field">
+              <label for="memory-{{i}}">Memory</label>
+              <input id="memory-{{i}}" formControlName="memory" placeholder="Memory" type="number">
+            </div>
+
+            <button type="button" (click)="removeAccelerator(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Alternate Names</h3>
+        <div formArrayName="alternate_name">
+          <div class="add-button">
+            <button type="button" (click)="addAlternateName()">Add Alternate Name</button>
+          </div>
+          <div *ngFor="let _ of alternateNameControls; let i = index">
+            <div class="field">
+              <input id="alt-name-{{i}}" [formControlName]="i" placeholder="Alternate Name">
+            </div>
+            <button type="button" (click)="removeAlternateName(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Application Areas</h3>
+        <div formArrayName="application_area">
+          <div class="add-button">
+            <button type="button" (click)="addApplicationArea()">Add Application Area</button>
+          </div>
+          <div *ngFor="let _ of applicationAreaControls; let i = index">
+            <div class="field">
+              <input id="app-area-{{i}}" [formControlName]="i" placeholder="Application Area">
+            </div>
+            <button type="button" (click)="removeApplicationArea(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Industrial Sectors</h3>
+        <div formArrayName="industrial_sector">
+          <div class="add-button">
+            <button type="button" (click)="addIndustrialSector()">Add Industrial Sector</button>
+          </div>
+          <div *ngFor="let _ of industrialSectorControls; let i = index">
+            <div class="field">
+              <input id="industrial-sector-{{i}}" [formControlName]="i" placeholder="Industrial Sector">
+            </div>
+            <button type="button" (click)="removeIndustrialSector(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Keywords</h3>
+        <div formArrayName="keyword">
+          <div class="add-button">
+            <button type="button" (click)="addKeyword()">Add Keyword</button>
+          </div>
+          <div *ngFor="let _ of keywordControls; let i = index">
+            <div class="field">
+              <input id="keyword-{{i}}" [formControlName]="i" placeholder="Keyword">
+            </div>
+            <button type="button" (click)="removeKeyword(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Media</h3>
+        <div formArrayName="media">
+          <div class="add-button">
+            <button type="button" (click)="addMedia()">Add Media</button>
+          </div>
+          <div *ngFor="let mediaGroup of mediaControls; let i = index" [formGroupName]="i">
+            <div class="field">
+              <label for="media-platform-{{i}}">Platform</label>
+              <input id="media-platform-{{i}}" formControlName="platform" placeholder="Platform" maxlength="64">
+            </div>
+
+            <div class="field">
+              <label for="media-identifier-{{i}}">Platform Resource Identifier</label>
+              <input id="media-identifier-{{i}}" formControlName="platform_resource_identifier"
+                placeholder="Platform Resource Identifier" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="media-checksum-{{i}}">Checksum</label>
+              <input id="media-checksum-{{i}}" formControlName="checksum" placeholder="Checksum" maxlength="1800">
+            </div>
+
+            <div class="field">
+              <label for="media-algorithm-{{i}}">Checksum Algorithm</label>
+              <input id="media-algorithm-{{i}}" formControlName="checksum_algorithm" placeholder="Checksum Algorithm"
+                maxlength="64">
+            </div>
+
+            <div class="field">
+              <label for="media-copyright-{{i}}">Copyright</label>
+              <input id="media-copyright-{{i}}" formControlName="copyright" placeholder="Copyright" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="media-url-{{i}}">Content URL</label>
+              <input id="media-url-{{i}}" formControlName="content_url" placeholder="Content URL" maxlength="1800"
+                type="url">
+            </div>
+
+            <div class="field">
+              <label for="media-size-{{i}}">Content Size (KB)</label>
+              <input id="media-size-{{i}}" formControlName="content_size_kb" placeholder="Content Size (KB)"
+                type="number">
+            </div>
+
+            <div class="field">
+              <label for="media-date-{{i}}">Date Published</label>
+              <input id="media-date-{{i}}" formControlName="date_published" placeholder="Date Published"
+                type="datetime-local">
+            </div>
+
+            <div class="field">
+              <label for="media-desc-{{i}}">Description</label>
+              <textarea id="media-desc-{{i}}" formControlName="description" placeholder="Description"
+                maxlength="1800"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="media-format-{{i}}">Encoding Format</label>
+              <input id="media-format-{{i}}" formControlName="encoding_format" placeholder="Encoding Format"
+                maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="media-name-{{i}}">Name</label>
+              <input id="media-name-{{i}}" formControlName="name" placeholder="Name" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="media-trl-{{i}}">Technology Readiness Level</label>
+              <input id="media-trl-{{i}}" formControlName="technology_readiness_level"
+                placeholder="Technology Readiness Level" type="number">
+            </div>
+
+            <button type="button" (click)="removeMedia(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Memory</h3>
+        <div formArrayName="memory">
+          <div class="add-button">
+            <button type="button" (click)="addMemory()">Add Memory</button>
+          </div>
+          <div *ngFor="let memoryGroup of memoryControls; let i = index" [formGroupName]="i">
+            <div class="field">
+              <label for="memory-type-{{i}}">Type</label>
+              <input id="memory-type-{{i}}" formControlName="type" placeholder="Type" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="memory-amount-{{i}}">Amount (GB)</label>
+              <input id="memory-amount-{{i}}" formControlName="amount_gb" placeholder="Amount (GB)" type="number">
+            </div>
+
+            <div class="field">
+              <label for="memory-read-{{i}}">Read Bandwidth</label>
+              <input id="memory-read-{{i}}" formControlName="read_bandwidth" placeholder="Read Bandwidth" type="number">
+            </div>
+
+            <div class="field">
+              <label for="memory-write-{{i}}">Write Bandwidth</label>
+              <input id="memory-write-{{i}}" formControlName="write_bandwidth" placeholder="Write Bandwidth"
+                type="number">
+            </div>
+
+            <div class="field">
+              <label for="memory-rdma-{{i}}">RDMA</label>
+              <input id="memory-rdma-{{i}}" formControlName="rdma" placeholder="RDMA" maxlength="256">
+            </div>
+
+            <button type="button" (click)="removeMemory(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Relevant Links</h3>
+        <div formArrayName="relevant_link">
+          <div class="add-button">
+            <button type="button" (click)="addRelevantLink()">Add Relevant Link</button>
+          </div>
+          <div *ngFor="let _ of relevantLinkControls; let i = index">
+            <div class="field">
+              <input id="relevant-link-{{i}}" [formControlName]="i" placeholder="Relevant Link" type="url">
+            </div>
+            <button type="button" (click)="removeRelevantLink(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Relevant Resource</h3>
+        <div formArrayName="relevant_resource">
+          <div class="add-button">
+            <button type="button" (click)="addRelevantResource()">Add Relevant Resource</button>
+          </div>
+          <div *ngFor="let _ of relevantResourceControls; let i = index">
+            <div class="field">
+              <input id="relevant-resource-{{i}}" [formControlName]="i" placeholder="Relevant Resource" type="number">
+            </div>
+            <button type="button" (click)="removeRelevantResource(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Relevant To</h3>
+        <div formArrayName="relevant_to">
+          <div class="add-button">
+            <button type="button" (click)="addRelevantTo()">Add Relevant To</button>
+          </div>
+          <div *ngFor="let _ of relevantToControls; let i = index">
+            <div class="field">
+              <input id="relevant-to-{{i}}" [formControlName]="i" placeholder="Relevant To" type="number">
+            </div>
+            <button type="button" (click)="removeRelevantTo(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Research Areas</h3>
+        <div formArrayName="research_area">
+          <div class="add-button">
+            <button type="button" (click)="addResearchArea()">Add Research Area</button>
+          </div>
+          <div *ngFor="let _ of researchAreaControls; let i = index">
+            <div class="field">
+              <input id="research-area-{{i}}" [formControlName]="i" placeholder="Research Area">
+            </div>
+            <button type="button" (click)="removeResearchArea(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Scientific Domains</h3>
+        <div formArrayName="scientific_domain">
+          <div class="add-button">
+            <button type="button" (click)="addScientificDomain()">Add Scientific Domain</button>
+          </div>
+          <div *ngFor="let _ of scientificDomainControls; let i = index">
+            <div class="field">
+              <input id="scientific-domain-{{i}}" [formControlName]="i" placeholder="Scientific Domain">
+            </div>
+            <button type="button" (click)="removeScientificDomain(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Storage</h3>
+        <div formArrayName="storage">
+          <div class="add-button">
+            <button type="button" (click)="addStorage()">Add Storage</button>
+          </div>
+          <div *ngFor="let storageGroup of storageControls; let i = index" [formGroupName]="i">
+            <div class="field">
+              <label for="storage-model-{{i}}">Model</label>
+              <input id="storage-model-{{i}}" formControlName="model" placeholder="Model" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="storage-vendor-{{i}}">Vendor</label>
+              <input id="storage-vendor-{{i}}" formControlName="vendor" placeholder="Vendor" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="storage-amount-{{i}}">Amount</label>
+              <input id="storage-amount-{{i}}" formControlName="amount" placeholder="Amount" type="number">
+            </div>
+
+            <div class="field">
+              <label for="storage-type-{{i}}">Type</label>
+              <input id="storage-type-{{i}}" formControlName="type" placeholder="Type" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="storage-read-{{i}}">Read Bandwidth</label>
+              <input id="storage-read-{{i}}" formControlName="read_bandwidth" placeholder="Read Bandwidth"
+                type="number">
+            </div>
+
+            <div class="field">
+              <label for="storage-write-{{i}}">Write Bandwidth</label>
+              <input id="storage-write-{{i}}" formControlName="write_bandwidth" placeholder="Write Bandwidth"
+                type="number">
+            </div>
+
+            <button type="button" (click)="removeStorage(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>CPU</h3>
+        <div formArrayName="cpu">
+          <div class="add-button">
+            <button type="button" (click)="addCpu()">Add CPU</button>
+          </div>
+          <div *ngFor="let cpuGroup of cpuControls; let i = index" [formGroupName]="i">
+            <div class="field">
+              <label for="cpu-cores-{{i}}">Number of CPU Cores</label>
+              <input id="cpu-cores-{{i}}" formControlName="num_cpu_cores" placeholder="Number of CPU Cores"
+                type="number">
+            </div>
+
+            <div class="field">
+              <label for="cpu-arch-{{i}}">Architecture</label>
+              <input id="cpu-arch-{{i}}" formControlName="architecture" placeholder="Architecture" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="cpu-vendor-{{i}}">Vendor</label>
+              <input id="cpu-vendor-{{i}}" formControlName="vendor" placeholder="Vendor" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="cpu-model-{{i}}">Model Name</label>
+              <input id="cpu-model-{{i}}" formControlName="cpu_model_name" placeholder="Model Name" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="cpu-family-{{i}}">CPU Family</label>
+              <input id="cpu-family-{{i}}" formControlName="cpu_family" placeholder="CPU Family" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="cpu-speed-{{i}}">Clock Speed (MHz)</label>
+              <input id="cpu-speed-{{i}}" formControlName="clock_speed" placeholder="Clock Speed (MHz)" type="number">
+            </div>
+
+            <button type="button" (click)="removeCpu(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-column">
+        <h3>Distribution</h3>
+        <div formArrayName="distribution">
+          <div class="add-button">
+            <button type="button" (click)="addDistribution()">Add Distribution</button>
+          </div>
+          <div *ngFor="let distributionGroup of distributionControls; let i = index" [formGroupName]="i">
+            <div class="field">
+              <label for="dist-platform-{{i}}">Platform</label>
+              <input id="dist-platform-{{i}}" formControlName="platform" placeholder="Platform" maxlength="64">
+            </div>
+
+            <div class="field">
+              <label for="dist-identifier-{{i}}">Platform Resource Identifier</label>
+              <input id="dist-identifier-{{i}}" formControlName="platform_resource_identifier"
+                placeholder="Platform Resource Identifier" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="dist-checksum-{{i}}">Checksum</label>
+              <input id="dist-checksum-{{i}}" formControlName="checksum" placeholder="Checksum" maxlength="1800">
+            </div>
+
+            <div class="field">
+              <label for="dist-algorithm-{{i}}">Checksum Algorithm</label>
+              <input id="dist-algorithm-{{i}}" formControlName="checksum_algorithm" placeholder="Checksum Algorithm"
+                maxlength="64">
+            </div>
+
+            <div class="field">
+              <label for="dist-copyright-{{i}}">Copyright</label>
+              <input id="dist-copyright-{{i}}" formControlName="copyright" placeholder="Copyright" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="dist-url-{{i}}">Content URL</label>
+              <input id="dist-url-{{i}}" formControlName="content_url" placeholder="Content URL" maxlength="1800">
+            </div>
+
+            <div class="field">
+              <label for="dist-size-{{i}}">Content Size (KB)</label>
+              <input id="dist-size-{{i}}" formControlName="content_size_kb" placeholder="Content Size (KB)"
+                type="number">
+            </div>
+
+            <div class="field">
+              <label for="dist-date-{{i}}">Date Published</label>
+              <input id="dist-date-{{i}}" formControlName="date_published" placeholder="Date Published"
+                type="datetime-local">
+            </div>
+
+            <div class="field">
+              <label for="dist-desc-{{i}}">Description</label>
+              <textarea id="dist-desc-{{i}}" formControlName="description" placeholder="Description"
+                maxlength="1800"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="dist-format-{{i}}">Encoding Format</label>
+              <input id="dist-format-{{i}}" formControlName="encoding_format" placeholder="Encoding Format"
+                maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="dist-name-{{i}}">Name</label>
+              <input id="dist-name-{{i}}" formControlName="name" placeholder="Name" maxlength="256">
+            </div>
+
+            <div class="field">
+              <label for="dist-trl-{{i}}">Technology Readiness Level</label>
+              <input id="dist-trl-{{i}}" formControlName="technology_readiness_level"
+                placeholder="Technology Readiness Level" type="number">
+            </div>
+
+            <button type="button" (click)="removeDistribution(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Citation</h3>
+        <div formArrayName="citation">
+          <div class="add-button">
+            <button type="button" (click)="addCitation()">Add Citation</button>
+          </div>
+          <div *ngFor="let _ of citationControls; let i = index">
+            <div class="field">
+              <input id="citation-{{i}}" [formControlName]="i" placeholder="Citation id" type="number">
+            </div>
+            <button type="button" (click)="removeCitation(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Contact</h3>
+        <div formArrayName="contact">
+          <div class="add-button">
+            <button type="button" (click)="addContact()">Add Contact</button>
+          </div>
+          <div *ngFor="let _ of contactControls; let i = index">
+            <div class="field">
+              <input id="contact-{{i}}" [formControlName]="i" placeholder="Contact id" type="number">
+            </div>
+            <button type="button" (click)="removeContact(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Creator</h3>
+        <div formArrayName="creator">
+          <div class="add-button">
+            <button type="button" (click)="addCreator()">Add Creator</button>
+          </div>
+          <div *ngFor="let _ of creatorControls; let i = index">
+            <div class="field">
+              <input id="creator-{{i}}" [formControlName]="i" placeholder="Creator id" type="number">
+            </div>
+            <button type="button" (click)="removeCreator(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-column">
+        <h3>Is Part Of</h3>
+        <div formArrayName="is_part_of">
+          <div class="add-button">
+            <button type="button" (click)="addIsPartOf()">Add Is Part Of</button>
+          </div>
+          <div *ngFor="let _ of isPartOfControls; let i = index">
+            <div class="field">
+              <input id="is-part-of-{{i}}" [formControlName]="i" placeholder="Is Part Of id" type="number">
+            </div>
+            <button type="button" (click)="removeIsPartOf(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Has Part</h3>
+        <div formArrayName="has_part">
+          <div class="add-button">
+            <button type="button" (click)="addHasPart()">Add Has Part</button>
+          </div>
+          <div *ngFor="let _ of hasPartControls; let i = index">
+            <div class="field">
+              <input id="has-part-{{i}}" [formControlName]="i" placeholder="Has Part id" type="number">
+            </div>
+            <button type="button" (click)="removeHasPart(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-column">
+        <h3>Note</h3>
+        <div formArrayName="note">
+          <div class="add-button">
+            <button type="button" (click)="addNote()">Add Note</button>
+          </div>
+          <div *ngFor="let noteGroup of noteControls; let i = index" [formGroupName]="i">
+            <div class="field">
+              <input id="note-value-{{i}}" formControlName="value" placeholder="Value" type="string">
+            </div>
+            <button type="button" (click)="removeNote(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-button" *ngIf="!viewMode">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>

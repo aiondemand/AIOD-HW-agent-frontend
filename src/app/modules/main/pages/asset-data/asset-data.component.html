@@ -1,0 +1,23 @@
+<form [formGroup]="form">
+  <select formControlName="selectedOption" (change)="onSelectionChange()">
+    <option value="">-- Select option --</option>
+    <option *ngFor="let option of options" [value]="option">
+      {{option}}
+    </option>
+  </select>
+
+  <div *ngIf="idSelected">
+    <mat-hint>Computational asset id</mat-hint>
+    <input id="assetId" type="text" formControlName="assetId">
+  </div>
+  <div class="right">
+    <button (click)="getData()"> Get computational assets</button>
+  </div>
+</form>
+
+<div *ngIf="data.length">
+  <div *ngFor="let asset of data">
+    <app-asset-form [data]="asset" [viewMode]="true"></app-asset-form>
+    <hr>
+  </div>
+</div>
