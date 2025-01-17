@@ -1,0 +1,42 @@
+<div class="reload-button">
+  <button type="button" (click)="reload()">Reload</button>
+</div>
+
+<div class="cards-container">
+  <div class="cards-grid">
+    <div class="card" *ngFor="let item of data">
+      <div class="card-header">
+        <h3 class="card-title">{{ item.plugin.name }}</h3>
+        <span class="badge">{{ item.plugin.orchestrator_type }}</span>
+      </div>
+
+      <div class="card-body">
+        <p class="description">{{ item.plugin.documentation.description }}</p>
+
+        <div class="divider"></div>
+
+        <div class="metadata">
+          <p><strong>Author:</strong> {{ item.plugin.documentation.author }}</p>
+          <p><strong>Version:</strong> {{ item.plugin.documentation.version }}</p>
+          <p><strong>Module:</strong> {{ item.plugin.module }}</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div *ngIf="item.plugin.dependencies.length > 0">
+          <h4>Dependencies</h4>
+          <div class="chips">
+            <span class="chip" *ngFor="let dependency of item.plugin.dependencies">
+              {{ dependency }}
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="item.plugin.configuration && Object.keys(item.plugin.configuration).length > 0" class="config-section">
+          <h4>Configuration</h4>
+          <pre class="config-code">{{ item.plugin.configuration | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

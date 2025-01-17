@@ -1,0 +1,118 @@
+.reload-button {
+  text-align: right;
+  margin-bottom: 10px;
+}
+.cards-container {
+  padding: 1rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 100%;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.card-header {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #2c3e50;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: #e9ecef;
+  color: #495057;
+  border-radius: 20px;
+  margin-top: 0.5rem;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.description {
+  color: #6c757d;
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.divider {
+  height: 1px;
+  background: #e9ecef;
+  margin: 1rem 0;
+}
+
+.metadata p {
+  margin: 0.5rem 0;
+  color: #495057;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.chip {
+  background: #e9ecef;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  color: #495057;
+}
+
+.config-section {
+  margin-top: 1rem;
+}
+
+.config-code {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  margin: 0;
+}
+
+h4 {
+  color: #2c3e50;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
